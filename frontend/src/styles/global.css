@@ -50,3 +50,63 @@ body {
   border-radius: 5px;
   text-align: center;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.conflict-columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.conflict-columns pre {
+  background: #f1f1f1;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  height: 200px;
+  overflow: auto;
+}
+
+.modal-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.activity-log {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f8f8f8;
+  border-radius: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+}
+.activity-log ul {
+  list-style: none;
+  padding-left: 0;
+}
+.activity-log li {
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+}
