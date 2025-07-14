@@ -1,0 +1,50 @@
+.board-wrapper {
+  padding: 1rem;
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.board-columns {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.kanban-column {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 300px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.task-card {
+  background: #f0f4f8;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.task-actions button {
+  margin: 3px;
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.task-actions .delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.task-actions button:hover {
+  background: #dfe6e9;
+}
