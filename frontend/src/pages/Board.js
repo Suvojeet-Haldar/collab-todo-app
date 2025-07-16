@@ -1,3 +1,5 @@
+// frontend/src/pages/Board.js
+
 import { useTheme } from '../context/ThemeContext';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -12,7 +14,7 @@ const STATUSES = ['Todo', 'In Progress', 'Done'];
 
 const Board = () => {
   const { token, user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme(); // ✅ Correct usage
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState([]);
@@ -20,8 +22,13 @@ const Board = () => {
   const [newTask, setNewTask] = useState({ title: '', description: '' });
 
   useEffect(() => {
-    if (!user) navigate('/');
-  }, [user, navigate]);
+    if (!token || !user) {
+      logout();
+      navigate('/');
+    }
+  }, [token, user, logout, navigate]);
+
+  if (!token || !user) return null;
 
   const config = { headers: { Authorization: `Bearer ${token}` } };
 
@@ -31,7 +38,7 @@ const Board = () => {
     socket.on('task_created', task => {
       setTasks(prev => {
         const exists = prev.some(t => t._id === task._id);
-        return exists ? prev : [...prev, task];
+        return exists ? prev : [task, ...prev]; // ✅ Add newest on top
       });
     });
 
@@ -67,9 +74,8 @@ const Board = () => {
     e.preventDefault();
     if (!newTask.title.trim()) return alert('Title required');
     try {
-      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/tasks`, newTask, config);
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/tasks`, newTask, config);
       setNewTask({ title: '', description: '' });
-      setTasks(prev => [...prev, res.data]);
     } catch {
       alert('Could not create task');
     }
@@ -123,12 +129,12 @@ const Board = () => {
 
   return (
     <div className="board-wrapper">
-      {/* ✅ TOP-RIGHT THEME TOGGLE */}
+      {/* Theme Toggle Button */}
       <div style={{ position: 'absolute', top: '16px', right: '16px' }}>
         <button
           onClick={toggleTheme}
           style={{
-            backgroundColor: theme === 'light' ? '#333' : '#eee',
+            backgroundColor: theme === 'light' ? '#111' : '#eee',
             color: theme === 'light' ? '#fff' : '#000',
             padding: '8px 12px',
             border: 'none',
@@ -140,7 +146,6 @@ const Board = () => {
         </button>
       </div>
 
-      {/* ✅ GREETING + LOGOUT */}
       <div className="board-header">
         <h2>Hello, {user?.name || 'Guest'}</h2>
         <button onClick={() => {
@@ -151,7 +156,6 @@ const Board = () => {
         </button>
       </div>
 
-      {/* ✅ TASK INPUT FORM */}
       <form className="task-form" onSubmit={handleCreate} style={{ maxWidth: '900px', margin: '0 auto' }}>
         <input
           type="text"
@@ -170,7 +174,6 @@ const Board = () => {
         <button type="submit" className="add-btn">Add Task</button>
       </form>
 
-      {/* ✅ COLUMNS */}
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="board-columns">
           {STATUSES.map(status => (

@@ -275,3 +275,26 @@ body.dark .theme-toggle-top-right {
   margin-bottom: 10px;
   background-color: var(--card-bg); /* if theme based */
 }
+
+.activity-log {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: var(--tile-bg, #f1f1f1);
+  border-radius: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.activity-log h3 {
+  margin-bottom: 10px;
+}
+
+.activity-log ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.activity-log li {
+  margin-bottom: 8px;
+  font-size: 14px;
+}

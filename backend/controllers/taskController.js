@@ -1,20 +1,19 @@
+// backend/controllers/taskController.js
+
 const Task = require('../models/Task');
 const User = require('../models/User');
 const ActionLog = require('../models/ActionLog');
 
-// 📍 backend/controllers/taskController.js
-
 exports.getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.find()
-      .populate('assignedTo', 'name') // only get 'name' field
-      .sort({ lastEdited: -1 });
+      .populate('assignedTo', 'name')
+      .sort({ createdAt: -1 }); // ✅ Sort newest first (consistent with add)
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch tasks' });
   }
 };
-
 
 exports.createTask = async (req, res, io) => {
   try {
@@ -60,9 +59,6 @@ exports.updateTask = async (req, res, io) => {
       { new: true }
     );
 
-    console.log("✅ Task updated assignedTo:", updatedTask.assignedTo);
-
-    // ✅ Populate before emitting or sending to frontend
     const populatedTask = await Task.findById(updatedTask._id).populate('assignedTo', 'name');
 
     io.emit('task_updated', populatedTask);
@@ -81,11 +77,6 @@ exports.updateTask = async (req, res, io) => {
     res.status(400).json({ error: 'Could not update task' });
   }
 };
-
-
-
-
-
 
 exports.deleteTask = async (req, res, io) => {
   const { id } = req.params;

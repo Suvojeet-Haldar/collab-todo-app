@@ -1,3 +1,5 @@
+// frontend/src/context/AuthContext.js
+
 import React, { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext();
@@ -14,12 +16,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-  localStorage.removeItem('authToken');
-  setToken(null);
-  setUser(null);
-};
-
-
+    localStorage.removeItem('token'); // ✅ fixed key
+    localStorage.removeItem('user');  // ✅ also remove user object
+    setToken(null);
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider value={{ token, user, login, logout }}>

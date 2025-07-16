@@ -1,11 +1,10 @@
-// backend/routes/log.js
+// backend/controllers/actionLogController.js
 
-const express = require('express');
-const router = express.Router();
-const auth = require('../middleware/authMiddleware');
 const ActionLog = require('../models/ActionLog');
+const User = require('../models/User');
+const Task = require('../models/Task');
 
-router.get('/', auth, async (req, res) => {
+exports.getRecentLogs = async (req, res) => {
   try {
     const logs = await ActionLog.find()
       .sort({ timestamp: -1 })
@@ -25,6 +24,4 @@ router.get('/', auth, async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Failed to fetch logs' });
   }
-});
-
-module.exports = router;
+};

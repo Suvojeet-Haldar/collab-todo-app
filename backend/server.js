@@ -36,6 +36,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/logs', logRoutes);
 
+app.use('/api/logs', require('./routes/log'));
+
 // ✅ Connect to DB and start server
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
