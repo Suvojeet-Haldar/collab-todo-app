@@ -1,50 +1,277 @@
-.board-wrapper {
-  padding: 1rem;
+/* Dark/Light theme variables */
+:root {
+  --bg-light: #f4f4f4;
+  --bg-dark: #121212;
+  --card-light: #ffffff;
+  --card-dark: #1e1e1e;
+  --text-light: #000;
+  --text-dark: #fff;
+  --button-blue: #007bff;
+  --button-dark: #2c2c2c;
+  --delete-red: #f44336;
+  --spacing: 20px;
 }
 
+body.light {
+  background-color: var(--bg-light);
+  color: var(--text-light);
+}
+
+body.dark {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+/* Layout */
+.board-wrapper {
+  min-height: 100vh;
+  padding: var(--spacing);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Header Row */
 .board-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: var(--spacing);
+  padding: 0 var(--spacing);
 }
 
-.board-columns {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.kanban-column {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 1rem;
-  width: 300px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.task-card {
-  background: #f0f4f8;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.task-actions button {
-  margin: 3px;
-  padding: 6px 10px;
-  font-size: 12px;
-  cursor: pointer;
+.toggle-theme {
+  padding: 5px 12px;
   border: none;
-  border-radius: 4px;
-}
-
-.task-actions .delete-btn {
-  background: #e74c3c;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 8px;
+  background-color: var(--button-dark);
   color: white;
 }
 
-.task-actions button:hover {
-  background: #dfe6e9;
+.logout-btn {
+  padding: 5px 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 8px;
+  background-color: var(--delete-red);
+  color: white;
+}
+
+/* Task Form */
+.task-form {
+  background: var(--card-light);
+  padding: var(--spacing);
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  margin-bottom: var(--spacing);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+
+body.dark .task-form {
+  background: var(--card-dark);
+}
+
+.task-input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.task-form button {
+  background-color: var(--button-blue);
+  color: white;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Columns */
+.board-columns {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing);
+  width: 100%;
+  max-width: 1200px;
+}
+
+.column {
+  flex: 1;
+  background: var(--card-light);
+  padding: 10px;
+  border-radius: 12px;
+  min-height: 200px;
+}
+
+body.dark .column {
+  background: var(--card-dark);
+}
+
+/* Task Card */
+.task-card {
+  background: var(--card-light);
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+}
+
+body.dark .task-card {
+  background: var(--card-dark);
+}
+
+.task-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.task-actions button,
+.task-actions select {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.task-actions .delete-btn {
+  background-color: var(--delete-red);
+  color: white;
+  border: none;
+}
+
+footer {
+  margin-top: 60px;
+  height: 30px;
+  width: 100%;
+  background: inherit;
+}
+
+/* frontend/src/styles/board.css */
+
+.top-right-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.theme-toggle {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.theme-toggle.light {
+  background-color: #333;
+  color: #fff;
+}
+
+.theme-toggle.dark {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Center align column headers */
+.board-columns h3 {
+  text-align: center;
+}
+
+/* Dark mode toggle fixed to top right */
+.theme-toggle-top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--toggle-bg);
+  color: var(--toggle-text);
+  border: none;
+  transition: background 0.3s ease;
+}
+
+body.light .theme-toggle-top-right {
+  --toggle-bg: #222;
+  --toggle-text: white;
+}
+body.dark .theme-toggle-top-right {
+  --toggle-bg: #ddd;
+  --toggle-text: black;
+}
+
+/* Red button for logout */
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+.logout-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Limit width of form */
+.task-form {
+  width: 720px;
+  margin: 20px auto;
+  background: var(--tile-bg);
+  padding: 16px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.task-input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+.add-task-btn {
+  background-color: #3498db;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.add-task-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Equal padding inside task cards */
+.task-card {
+  background: var(--tile-bg);
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.task-card {
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background-color: var(--card-bg); /* if theme based */
 }

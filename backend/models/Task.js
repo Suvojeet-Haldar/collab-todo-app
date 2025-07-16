@@ -5,7 +5,9 @@ const TaskSchema = new mongoose.Schema({
   description: String,
   status: { type: String, enum: ['Todo', 'In Progress', 'Done'], default: 'Todo' },
   priority: { type: String, enum: ['Low', 'Medium', 'High'], default: 'Medium' },
-  assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User',
+  default: null
+  },
   lastEdited: Date,
   updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });

@@ -1,7 +1,10 @@
+// frontend/src/pages/Login.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import '../styles/login.css'; // ✅ make sure this import exists
 
 const Login = () => {
   const { login } = useAuth();
@@ -17,11 +20,9 @@ const Login = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-
       console.log('API base URL is:', process.env.REACT_APP_API_URL);
 
       const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, form);
-
       login(res.data);
       navigate('/board');
     } catch (err) {
@@ -30,15 +31,30 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Login</h2>
-      {error && <div className="auth-error">{error}</div>}
+    <div className="login-container">
       <form onSubmit={handleSubmit}>
-        <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
         <button type="submit">Login</button>
       </form>
-      <p>Don't have an account? <Link to="/register">Register</Link></p>
+      {error && <p className="error">{error}</p>}
+      <p>
+        Don't have an account? <Link to="/register">Register</Link>
+      </p>
     </div>
   );
 };

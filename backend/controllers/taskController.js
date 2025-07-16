@@ -2,10 +2,19 @@ const Task = require('../models/Task');
 const User = require('../models/User');
 const ActionLog = require('../models/ActionLog');
 
+// 📍 backend/controllers/taskController.js
+
 exports.getAllTasks = async (req, res) => {
-  const tasks = await Task.find().populate('assignedTo', 'name');
-  res.json(tasks);
+  try {
+    const tasks = await Task.find()
+      .populate('assignedTo', 'name') // only get 'name' field
+      .sort({ lastEdited: -1 });
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch tasks' });
+  }
 };
+
 
 exports.createTask = async (req, res, io) => {
   try {
@@ -39,14 +48,7 @@ exports.updateTask = async (req, res, io) => {
     const existingTask = await Task.findById(id);
     if (!existingTask) return res.status(404).json({ msg: 'Task not found' });
 
-    // Conflict detection: if task was edited within last 5s by someone else
     const now = new Date();
-    if (existingTask.lastEdited && existingTask.lastEdited.getTime() !== new Date(incomingTask.lastEdited).getTime()) {
-      return res.status(409).json({
-        conflict: true,
-        serverVersion: existingTask
-      });
-    }
 
     const updatedTask = await Task.findByIdAndUpdate(
       id,
@@ -58,21 +60,32 @@ exports.updateTask = async (req, res, io) => {
       { new: true }
     );
 
-    io.emit('task_updated', updatedTask);
+    console.log("✅ Task updated assignedTo:", updatedTask.assignedTo);
+
+    // ✅ Populate before emitting or sending to frontend
+    const populatedTask = await Task.findById(updatedTask._id).populate('assignedTo', 'name');
+
+    io.emit('task_updated', populatedTask);
 
     await ActionLog.create({
       action: 'update',
-      taskId: updatedTask._id,
+      taskId: populatedTask._id,
       performedBy: req.user.id
     });
 
     io.emit('log_updated');
 
-    res.json(updatedTask);
+    res.json(populatedTask);
   } catch (err) {
+    console.error('❌ Task update failed:', err);
     res.status(400).json({ error: 'Could not update task' });
   }
 };
+
+
+
+
+
 
 exports.deleteTask = async (req, res, io) => {
   const { id } = req.params;
