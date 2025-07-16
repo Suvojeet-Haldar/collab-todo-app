@@ -2,6 +2,8 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const auth = require('../middleware/auth');
+
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
@@ -29,3 +31,8 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
+router.get('/users', auth, async (req, res) => {
+  const users = await User.find({}, 'name _id');
+  res.json(users);
+});

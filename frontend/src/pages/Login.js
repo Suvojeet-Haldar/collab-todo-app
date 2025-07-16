@@ -17,7 +17,11 @@ const Login = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, form);
+
+      console.log('API base URL is:', process.env.REACT_APP_API_URL);
+
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, form);
+
       login(res.data);
       navigate('/board');
     } catch (err) {
