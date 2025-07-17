@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import socket from '../socket';
 import Column from '../components/Column';
+import ActivityLog from '../components/ActivityLog'; // ✅ ADD THIS LINE
 import { DragDropContext } from 'react-beautiful-dnd';
 import '../styles/board.css';
 
@@ -38,7 +39,7 @@ const Board = () => {
     socket.on('task_created', task => {
       setTasks(prev => {
         const exists = prev.some(t => t._id === task._id);
-        return exists ? prev : [task, ...prev]; // ✅ Add newest on top
+        return exists ? prev : [task, ...prev];
       });
     });
 
@@ -190,6 +191,9 @@ const Board = () => {
           ))}
         </div>
       </DragDropContext>
+
+      {/* ✅ RENDER THE ACTIVITY LOG HERE */}
+      <ActivityLog />
     </div>
   );
 };
