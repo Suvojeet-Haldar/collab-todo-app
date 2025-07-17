@@ -4,7 +4,7 @@ const Task = require('../models/Task');
 const User = require('../models/User');
 const ActionLog = require('../models/ActionLog');
 
-// ✅ New controller method
+// ✅ Fetch a single task by ID
 exports.getTaskById = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id).populate('assignedTo', 'name');
@@ -16,7 +16,7 @@ exports.getTaskById = async (req, res) => {
   }
 };
 
-
+// ✅ Fetch all tasks
 exports.getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.find()
@@ -28,22 +28,24 @@ exports.getAllTasks = async (req, res) => {
   }
 };
 
-// ✅ NEW: Fetch single task by ID (used for conflict detection)
-exports.getTaskById = async (req, res) => {
-  try {
-    const task = await Task.findById(req.params.id).populate('assignedTo', 'name');
-    if (!task) return res.status(404).json({ msg: 'Task not found' });
-    res.json(task);
-  } catch (err) {
-    console.error('❌ Failed to fetch task by ID:', err);
-    res.status(500).json({ error: 'Failed to fetch task' });
-  }
-};
-
+// ✅ Create task with validation
 exports.createTask = async (req, res, io) => {
   try {
+    const title = req.body.title.trim();
+
+    const forbiddenTitles = ['todo', 'in progress', 'done'];
+    if (forbiddenTitles.includes(title.toLowerCase())) {
+      return res.status(400).json({ error: 'Task title cannot match column names (Todo, In Progress, Done)' });
+    }
+
+    const existing = await Task.findOne({ title: new RegExp(`^${title}$`, 'i') });
+    if (existing) {
+      return res.status(400).json({ error: 'Task title must be unique' });
+    }
+
     const task = await Task.create({
       ...req.body,
+      title,
       updatedBy: req.user.id,
       lastEdited: new Date()
     });
@@ -60,10 +62,12 @@ exports.createTask = async (req, res, io) => {
 
     res.status(201).json(task);
   } catch (err) {
-    res.status(400).json({ error: 'Task title must be unique and valid' });
+    console.error('❌ Create task failed:', err);
+    res.status(400).json({ error: 'Task creation failed' });
   }
 };
 
+// ✅ Update task with validation and conflict detection
 exports.updateTask = async (req, res, io) => {
   const { id } = req.params;
   const incomingTask = req.body;
@@ -83,12 +87,29 @@ exports.updateTask = async (req, res, io) => {
       });
     }
 
+    const newTitle = incomingTask.title?.trim();
+    if (newTitle) {
+      const forbiddenTitles = ['todo', 'in progress', 'done'];
+      if (forbiddenTitles.includes(newTitle.toLowerCase())) {
+        return res.status(400).json({ error: 'Task title cannot match column names (Todo, In Progress, Done)' });
+      }
+
+      const duplicate = await Task.findOne({
+        _id: { $ne: id },
+        title: new RegExp(`^${newTitle}$`, 'i')
+      });
+      if (duplicate) {
+        return res.status(400).json({ error: 'Task title must be unique' });
+      }
+    }
+
     const now = new Date();
 
     const updatedTask = await Task.findByIdAndUpdate(
       id,
       {
         ...incomingTask,
+        title: newTitle,
         updatedBy: req.user.id,
         lastEdited: now
       },
@@ -114,6 +135,7 @@ exports.updateTask = async (req, res, io) => {
   }
 };
 
+// ✅ Delete task
 exports.deleteTask = async (req, res, io) => {
   const { id } = req.params;
   const deleted = await Task.findByIdAndDelete(id);
@@ -132,6 +154,7 @@ exports.deleteTask = async (req, res, io) => {
   res.json({ msg: 'Task deleted' });
 };
 
+// ✅ Smart assign task
 exports.smartAssign = async (req, res, io) => {
   const { id } = req.params;
 

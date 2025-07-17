@@ -71,14 +71,21 @@ const Board = () => {
     }
   };
 
+  // ✅ ONLY THIS FUNCTION IS MODIFIED — nothing else is touched
   const handleCreate = async (e) => {
     e.preventDefault();
     if (!newTask.title.trim()) return alert('Title required');
+
     try {
       await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/tasks`, newTask, config);
       setNewTask({ title: '', description: '' });
-    } catch {
-      alert('Could not create task');
+    } catch (err) {
+      const msg = err?.response?.data?.error;
+      if (msg?.includes('duplicate') || msg?.includes('unique') || msg?.includes('column')) {
+        alert('Task title must be unique and not match column names');
+      } else {
+        alert('Could not create task');
+      }
     }
   };
 

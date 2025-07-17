@@ -34,13 +34,21 @@ const TaskCard = ({ task, index, onDropTask, onSmartAssign, onDelete, onManualAs
       const serverTask = res.data;
 
       if (new Date(serverTask.lastEdited).getTime() !== new Date(task.lastEdited).getTime()) {
+        // Conflict detected
         setConflictData({
           clientVersion: { ...task, ...editedTask },
           serverVersion: serverTask
         });
       } else {
-        // ✅ Pass `lastEdited` to ensure proper conflict comparison in backend
-        onDropTask({ ...task, ...editedTask, lastEdited: task.lastEdited }, task.status);
+        // No conflict, update directly
+        const updatedTask = {
+          ...task,
+          ...editedTask,
+          lastEdited: new Date().toISOString()
+        };
+        await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/tasks/${task._id}`, updatedTask, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setIsEditing(false);
       }
     } catch (err) {
@@ -49,10 +57,20 @@ const TaskCard = ({ task, index, onDropTask, onSmartAssign, onDelete, onManualAs
     }
   };
 
-  const handleConflictResolve = (resolvedTask) => {
-    onDropTask({ ...resolvedTask }, resolvedTask.status || task.status);
-    setConflictData(null);
-    setIsEditing(false);
+  const handleConflictResolve = async (resolvedTask) => {
+    try {
+      resolvedTask.lastEdited = new Date().toISOString();
+      const res = await axios.put(
+        `${process.env.REACT_APP_BACKEND_URL}/api/tasks/${task._id}`,
+        resolvedTask,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setConflictData(null);
+      setIsEditing(false);
+    } catch (err) {
+      console.error('❌ Failed to resolve conflict:', err);
+      alert('Failed to save resolved task');
+    }
   };
 
   return (
