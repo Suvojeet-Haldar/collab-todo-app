@@ -40,7 +40,6 @@ const TaskCard = ({ task, index, onDropTask, onSmartAssign, onDelete, onManualAs
           serverVersion: serverTask
         });
       } else {
-        // No conflict, update directly
         const updatedTask = {
           ...task,
           ...editedTask,
@@ -60,7 +59,7 @@ const TaskCard = ({ task, index, onDropTask, onSmartAssign, onDelete, onManualAs
   const handleConflictResolve = async (resolvedTask) => {
     try {
       resolvedTask.lastEdited = new Date().toISOString();
-      const res = await axios.put(
+      await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/api/tasks/${task._id}`,
         resolvedTask,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -78,7 +77,7 @@ const TaskCard = ({ task, index, onDropTask, onSmartAssign, onDelete, onManualAs
       <Draggable draggableId={task._id} index={index}>
         {(provided) => (
           <div
-            className="task-card"
+            className="task-card fade-in-animate"
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
