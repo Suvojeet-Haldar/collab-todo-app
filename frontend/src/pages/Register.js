@@ -1,10 +1,14 @@
+// frontend/src/pages/Register.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Register = () => {
   const { login } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -17,10 +21,7 @@ const Register = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      
-      console.log("API URL:", process.env.REACT_APP_API_URL);
-
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, { name: form.name, email: form.email, password: form.password });
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, form);
       login(res.data);
       navigate('/board');
     } catch (err) {
@@ -30,6 +31,23 @@ const Register = () => {
 
   return (
     <div className="auth-container">
+      {/* Theme Toggle Button */}
+      <div style={{ position: 'absolute', top: '16px', right: '16px' }}>
+        <button
+          onClick={toggleTheme}
+          style={{
+            backgroundColor: theme === 'light' ? '#111' : '#eee',
+            color: theme === 'light' ? '#fff' : '#000',
+            padding: '8px 12px',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer'
+          }}
+        >
+          {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+        </button>
+      </div>
+
       <h2>Register</h2>
       {error && <div className="auth-error">{error}</div>}
       <form onSubmit={handleSubmit}>
