@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useNavigate, Link } from 'react-router-dom';
-import '../styles/login.css'; // ✅ Use the same CSS as Login
+import '../styles/login.css'; // ✅ Using same styles as Login
 
 const Register = () => {
   const { login } = useAuth();
@@ -50,6 +50,16 @@ const Register = () => {
       </div>
 
       <div className="login-container">
+        {/* Landing Info */}
+        <div className="landing-info">
+          <h1 className="app-title">Get Started with CollabBoard</h1>
+          <p className="tagline">Collaborate in real-time with your team.</p>
+          <p className="description">
+            Sign up and start organizing tasks today.
+          </p>
+        </div>
+
+        {/* Register Form */}
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -77,6 +87,7 @@ const Register = () => {
           />
           <button type="submit">Register</button>
         </form>
+
         {error && <p className="error">{error}</p>}
         <p>
           Already registered? <Link to="/">Login</Link>
