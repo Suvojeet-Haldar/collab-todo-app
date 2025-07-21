@@ -50,6 +50,16 @@ const Login = () => {
       </div>
 
       <div className="login-container">
+        {/* Landing Info */}
+        <div className="landing-info">
+          <h1 className="app-title">CollabBoard</h1>
+          <p className="tagline">Plan. Assign. Collaborate. All in real-time.</p>
+          <p className="description">
+            CollabBoard is a real-time collaborative Kanban board designed to help teams manage tasks efficiently.
+          </p>
+        </div>
+
+        {/* Login Form */}
         <form onSubmit={handleSubmit}>
           <input
             type="email"
@@ -69,6 +79,7 @@ const Login = () => {
           />
           <button type="submit">Login</button>
         </form>
+
         {error && <p className="error">{error}</p>}
         <p>
           Don&apos;t have an account? <Link to="/register">Register</Link>
