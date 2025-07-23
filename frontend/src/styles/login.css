@@ -183,7 +183,7 @@ body.dark .tagline {
 }
 
 .description {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--text-muted, #666);
   line-height: 1.4;
   max-width: 360px;
