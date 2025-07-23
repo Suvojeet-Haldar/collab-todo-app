@@ -164,7 +164,7 @@ const Board = () => {
         </button>
       </div>
 
-      <form className="task-form" onSubmit={handleCreate} style={{ maxWidth: '900px', margin: '0 auto' }}>
+      <form className="task-form" onSubmit={handleCreate}>
         <input
           type="text"
           placeholder="Task title"

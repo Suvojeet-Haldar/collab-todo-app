@@ -34,6 +34,7 @@ body.dark {
 
 /* Header Row */
 .board-header {
+  margin-top: 27px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -91,7 +92,7 @@ body.dark .task-form {
 }
 
 .task-form button {
-  background-color: var(--button-blue);
+  background-color: #5c5cff;
   color: white;
   border: none;
   padding: 10px;
@@ -155,7 +156,7 @@ body.dark .task-card {
 }
 
 .task-actions .delete-btn {
-  background-color: var(--delete-red);
+  background-color: #5c5cff;
   color: white;
   border: none;
 }
@@ -222,7 +223,7 @@ body.dark .theme-toggle-top-right {
 
 /* Red button for logout */
 .logout-btn {
-  background-color: #e74c3c;
+  background-color: #5c5cff;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -423,7 +424,6 @@ body.dark .theme-toggle-top-right {
   padding: var(--spacing);
   border-radius: 10px;
   box-shadow: 0 0 8px rgba(0,0,0,0.1);
-  margin: 0 auto 24px auto; /* ⬅️ margin below form for spacing from column */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -460,4 +460,107 @@ body.dark .column {
   font-size: 16px; /* ⬅️ ensure exact match */
   cursor: pointer;
   min-height: 40px;
+}
+
+/* Add to bottom of frontend/src/styles/board.css */
+
+/* ✅ Wrapper that mimics .login-wrapper */
+.board-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-light);
+  padding: 16px;
+}
+
+body.dark .board-wrapper {
+  background-color: var(--bg-dark);
+}
+
+/* ✅ Container that mimics .login-container */
+.board-container {
+  width: 100%;
+  max-width: 900px;
+  background-color: var(--card-light);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+body.dark .board-container {
+  background-color: var(--card-dark);
+  color: white;
+}
+
+/* Optional: smooth animation */
+.board-container,
+.board-wrapper {
+  transition: all 0.3s ease-in-out;
+}
+
+.task-form {
+  max-width: 430px;
+  width: 96.75%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  gap: 12px;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  border-radius: 8px;
+}
+
+/* Optional: Adjust input/select/button sizing for better line-up */
+.task-form input,
+.task-form select,
+.task-form button {
+  flex: 1 1 auto;
+      flex: 1 1 auto;
+    min-width: 90%;
+    max-width: 100%;
+}
+
+/* Already exists, but make sure this is present and same max width */
+.board-columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .task-form {
+    max-width: 87.5%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .task-form input,
+  .task-form select,
+  .task-form button {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .board-columns {
+    /* max-width: 95%; */
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .task-form input,
+  .task-form select,
+  .task-form button {
+    max-width: 100%;
+    min-width: 90%;
+  }
 }
