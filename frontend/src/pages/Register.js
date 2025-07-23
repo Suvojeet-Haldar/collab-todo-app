@@ -12,17 +12,36 @@ const Register = () => {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setError(''); // ✅ Clear error dynamically on input change
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // ✅ Clear previous errors
+
+    if (form.password !== form.confirmPassword) {
+      alert('Passwords do not match'); // ✅ Show browser popup only
+      return;
+    }
+
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, form);
+      const { name, email, password } = form; // omit confirmPassword
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
+        name,
+        email,
+        password
+      });
       login(res.data);
       navigate('/board');
     } catch (err) {
@@ -85,10 +104,20 @@ const Register = () => {
             onChange={handleChange}
             required
           />
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={form.confirmPassword}
+            onChange={handleChange}
+            required
+          />
           <button type="submit">Register</button>
         </form>
 
-        {error && <p className="error">{error}</p>}
+        {/* ✅ Only show error if it's from backend (e.g. email already exists) */}
+        {error && error !== 'Passwords do not match' && <p className="error">{error}</p>}
+
         <p>
           Already registered? <Link to="/">Login</Link>
         </p>
