@@ -147,7 +147,8 @@ const Board = () => {
             padding: '8px 12px',
             border: 'none',
             borderRadius: '8px',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            border: theme === 'light' ? '1px solid #444': '1px solid #ccc'
           }}
         >
           {theme === 'light' ? 'Dark Mode' : 'Light Mode'}

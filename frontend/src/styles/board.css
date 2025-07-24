@@ -295,7 +295,7 @@ body.dark .theme-toggle-top-right {
   .board-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    /* gap: 12px; */
   }
 
   .task-form,
@@ -348,6 +348,20 @@ body.dark .theme-toggle-top-right {
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
+
+  .logout-btn {
+    background-color: #5c5cff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    font-size: 16px;
+    /* margin-left: 75%; */
+    margin-top: 2.325%;
+}
+
   .board-columns {
     flex-direction: column;
     align-items: center;
@@ -355,9 +369,13 @@ body.dark .theme-toggle-top-right {
   }
 
   .board-header {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
-    gap: 12px;
+    /* gap: 12px; */
+    padding-left: 8%;
+    margin: 10%;
+    padding-right: 8%;
+    width: 97%;
   }
 
   .task-form,
@@ -430,6 +448,7 @@ body.dark .theme-toggle-top-right {
 /* Dark mode for task form */
 body.dark .task-form {
   background: var(--card-dark);
+  border: 1px solid #444;
 }
 
 /* 🟡 FIX 2: Add subtle border to columns */
@@ -553,6 +572,9 @@ body.dark .task-actions .delete-btn
     padding: 20px;
     border-radius: 10px;
     box-shadow: none;
+    border: 1px solid #ccc;
+    margin-bottom: 17%;
+    padding-top: 25px;
   }
 
   .task-form input,
