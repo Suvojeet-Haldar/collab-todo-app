@@ -142,7 +142,7 @@ const Board = () => {
         <button
           onClick={toggleTheme}
           style={{
-            backgroundColor: theme === 'light' ? '#111' : '#eee',
+            backgroundColor: theme === 'light' ? '#2e2e2e' : '#f5f5f5',
             color: theme === 'light' ? '#fff' : '#000',
             padding: '8px 12px',
             border: 'none',

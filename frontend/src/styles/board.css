@@ -132,10 +132,12 @@ body.dark .column {
   padding: 12px;
   border-radius: 12px;
   box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  border: 1px solid #ccc;
 }
 
 body.dark .task-card {
   background: var(--card-dark);
+  border: 1px solid #444;
 }
 
 .task-actions {
@@ -371,9 +373,7 @@ body.dark .theme-toggle-top-right {
     margin-bottom: 28px; /* Ensures spacing below form */
   }
 
-  .column {
-    margin-bottom: 28px; /* Extra vertical spacing between columns */
-  }
+
 
   .task-actions {
     flex-direction: column;
@@ -405,10 +405,6 @@ body.dark .theme-toggle-top-right {
 
   .activity-log li {
     font-size: 13px;
-  }
-
-  .column {
-    margin-bottom: 32px; /* More gap between stacked columns */
   }
 
   .task-actions button,
@@ -504,7 +500,7 @@ body.dark .board-container {
 
 .task-form {
   max-width: 430px;
-  width: 96.75%;
+  width: 400px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -512,7 +508,7 @@ body.dark .board-container {
   padding: 30px;
   gap: 12px;
   border: 1px solid var(--border-color);
-  background-color: var(--card-bg);
+  background: var(--card-light);
   border-radius: 8px;
 }
 
@@ -526,6 +522,19 @@ body.dark .board-container {
     max-width: 100%;
 }
 
+body.dark .task-form input, body.dark .task-actions button, body.dark .task-actions select
+ {
+    background-color: #2e2e2e;
+    color: white;
+    border: 1px solid #444;
+}
+
+body.dark .task-actions .delete-btn
+ {
+    background-color: #5c5cff;
+    color: white;
+    border: none;
+}
 /* Already exists, but make sure this is present and same max width */
 .board-columns {
   display: flex;
@@ -536,12 +545,14 @@ body.dark .board-container {
   flex-wrap: wrap;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .task-form {
-    max-width: 81.5%;
+    max-width: 86.5%;
     flex-direction: column;
     align-items: stretch;
-    padding: 15px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: none;
   }
 
   .task-form input,

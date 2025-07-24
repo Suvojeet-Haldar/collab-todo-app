@@ -117,7 +117,7 @@ body {
 @media (max-width: 768px) {
   .board-columns {
     flex-direction: column;
-    gap: 1rem;
+    gap: 3rem;
   }
 
   .kanban-column {

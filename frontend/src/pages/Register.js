@@ -56,7 +56,7 @@ const Register = () => {
         <button
           onClick={toggleTheme}
           style={{
-            backgroundColor: theme === 'light' ? '#121212' : '#eee',
+            backgroundColor: theme === 'light' ? '#2e2e2e' : '#eee',
             color: theme === 'light' ? '#fff' : '#000',
             padding: '8px 12px',
             border: 'none',
